@@ -32,15 +32,7 @@ public class HelicopterController : MonoBehaviour
     private void Awake()
     {
         helicopterBody = GetComponent<Rigidbody>();
-
-        playerInput = GetComponent<InputManager>(); 
-
-        //Adding Player input events
-        playerInput.input.PlayerHelicopter.HorizontalMove.performed += OnHorizontalPerformed;
-        playerInput.input.PlayerHelicopter.HorizontalMove.canceled += OnHorizontalStopped;
-
-        playerInput.input.PlayerHelicopter.VerticalMove.performed += OnVerticalUpPerformed;
-        playerInput.input.PlayerHelicopter.VerticalMove.canceled += OnVerticalStopped;
+        playerInput = GetComponent<InputManager>();
     }
 
     void Start()
@@ -53,6 +45,13 @@ public class HelicopterController : MonoBehaviour
 
         horizontalInput = false;
         verticalInput = false;
+
+        //Adding Player input events -MUST be in Start method
+        playerInput.input.PlayerHelicopter.HorizontalMove.performed += OnHorizontalPerformed;
+        playerInput.input.PlayerHelicopter.HorizontalMove.canceled += OnHorizontalStopped;
+
+        playerInput.input.PlayerHelicopter.VerticalMove.performed += OnVerticalUpPerformed;
+        playerInput.input.PlayerHelicopter.VerticalMove.canceled += OnVerticalStopped;
     }
 
     //Move - Vertical Performed
