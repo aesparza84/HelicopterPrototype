@@ -8,6 +8,9 @@ public class HelicopterController : MonoBehaviour
     [SerializeField] private Rigidbody helicopterBody;
     [SerializeField] private Collider helicopterCollider;
 
+    [Header("Camera Reference")]
+    [SerializeField] private CameraController cameraController;
+
     [Header("Inputs")]
     [SerializeField] private InputManager playerInput;
 
@@ -33,6 +36,7 @@ public class HelicopterController : MonoBehaviour
     {
         helicopterBody = GetComponent<Rigidbody>();
         playerInput = GetComponent<InputManager>();
+        cameraController = GetComponent<CameraController>();
     }
 
     void Start()
@@ -52,6 +56,9 @@ public class HelicopterController : MonoBehaviour
 
         playerInput.input.PlayerHelicopter.VerticalMove.performed += OnVerticalUpPerformed;
         playerInput.input.PlayerHelicopter.VerticalMove.canceled += OnVerticalStopped;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     //Move - Vertical Performed
@@ -98,6 +105,10 @@ public class HelicopterController : MonoBehaviour
     private void FixedUpdate()
     {
         movement();
+
+        gameObject.transform.forward = Vector3.Lerp(gameObject.transform.forward,
+                                                  cameraController.lookDirection,
+                                                  Time.deltaTime * 3);
     }
 
     private void movement()
@@ -118,7 +129,9 @@ public class HelicopterController : MonoBehaviour
         }
 
         //Velocity we want to apply
-        moveVector = (horizontalVector + verticalVector) * currentSpeed;
+        moveVector = (horizontalVector.x * gameObject.transform.right  +
+                      horizontalVector.z * gameObject.transform.forward+
+                      verticalVector) * currentSpeed;
 
         limitVelocity = moveVector - currentVelocity;
         limitVelocity = Vector3.ClampMagnitude(limitVelocity, maxSpeed);
