@@ -44,6 +44,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PrimaryWeaponFire"",
+                    ""type"": ""Button"",
+                    ""id"": ""09ddbe59-d018-45f1-af34-0de072f8ddcb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SecondaryWeaponFire"",
+                    ""type"": ""Button"",
+                    ""id"": ""18cc6a2a-cc0a-4499-8d1c-dadd7490696a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -134,6 +152,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""VerticalMove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0d55cd33-76bc-4b94-b601-1afce238d41c"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PrimaryWeaponFire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""81bd62fe-caad-413b-85e1-a9f5cd16285c"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SecondaryWeaponFire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -144,6 +184,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerHelicopter = asset.FindActionMap("PlayerHelicopter", throwIfNotFound: true);
         m_PlayerHelicopter_HorizontalMove = m_PlayerHelicopter.FindAction("HorizontalMove", throwIfNotFound: true);
         m_PlayerHelicopter_VerticalMove = m_PlayerHelicopter.FindAction("VerticalMove", throwIfNotFound: true);
+        m_PlayerHelicopter_PrimaryWeaponFire = m_PlayerHelicopter.FindAction("PrimaryWeaponFire", throwIfNotFound: true);
+        m_PlayerHelicopter_SecondaryWeaponFire = m_PlayerHelicopter.FindAction("SecondaryWeaponFire", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -207,12 +249,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private List<IPlayerHelicopterActions> m_PlayerHelicopterActionsCallbackInterfaces = new List<IPlayerHelicopterActions>();
     private readonly InputAction m_PlayerHelicopter_HorizontalMove;
     private readonly InputAction m_PlayerHelicopter_VerticalMove;
+    private readonly InputAction m_PlayerHelicopter_PrimaryWeaponFire;
+    private readonly InputAction m_PlayerHelicopter_SecondaryWeaponFire;
     public struct PlayerHelicopterActions
     {
         private @PlayerControls m_Wrapper;
         public PlayerHelicopterActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @HorizontalMove => m_Wrapper.m_PlayerHelicopter_HorizontalMove;
         public InputAction @VerticalMove => m_Wrapper.m_PlayerHelicopter_VerticalMove;
+        public InputAction @PrimaryWeaponFire => m_Wrapper.m_PlayerHelicopter_PrimaryWeaponFire;
+        public InputAction @SecondaryWeaponFire => m_Wrapper.m_PlayerHelicopter_SecondaryWeaponFire;
         public InputActionMap Get() { return m_Wrapper.m_PlayerHelicopter; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -228,6 +274,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @VerticalMove.started += instance.OnVerticalMove;
             @VerticalMove.performed += instance.OnVerticalMove;
             @VerticalMove.canceled += instance.OnVerticalMove;
+            @PrimaryWeaponFire.started += instance.OnPrimaryWeaponFire;
+            @PrimaryWeaponFire.performed += instance.OnPrimaryWeaponFire;
+            @PrimaryWeaponFire.canceled += instance.OnPrimaryWeaponFire;
+            @SecondaryWeaponFire.started += instance.OnSecondaryWeaponFire;
+            @SecondaryWeaponFire.performed += instance.OnSecondaryWeaponFire;
+            @SecondaryWeaponFire.canceled += instance.OnSecondaryWeaponFire;
         }
 
         private void UnregisterCallbacks(IPlayerHelicopterActions instance)
@@ -238,6 +290,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @VerticalMove.started -= instance.OnVerticalMove;
             @VerticalMove.performed -= instance.OnVerticalMove;
             @VerticalMove.canceled -= instance.OnVerticalMove;
+            @PrimaryWeaponFire.started -= instance.OnPrimaryWeaponFire;
+            @PrimaryWeaponFire.performed -= instance.OnPrimaryWeaponFire;
+            @PrimaryWeaponFire.canceled -= instance.OnPrimaryWeaponFire;
+            @SecondaryWeaponFire.started -= instance.OnSecondaryWeaponFire;
+            @SecondaryWeaponFire.performed -= instance.OnSecondaryWeaponFire;
+            @SecondaryWeaponFire.canceled -= instance.OnSecondaryWeaponFire;
         }
 
         public void RemoveCallbacks(IPlayerHelicopterActions instance)
@@ -259,5 +317,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         void OnHorizontalMove(InputAction.CallbackContext context);
         void OnVerticalMove(InputAction.CallbackContext context);
+        void OnPrimaryWeaponFire(InputAction.CallbackContext context);
+        void OnSecondaryWeaponFire(InputAction.CallbackContext context);
     }
 }
