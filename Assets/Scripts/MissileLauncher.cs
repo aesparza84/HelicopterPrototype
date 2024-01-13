@@ -17,10 +17,15 @@ public class MissileLauncher : WeaponBase
     private void FixedUpdate()
     {
         resetFireRate();
+        //Debug.Log(timeToFire);
     }
     public override void Shoot()
     {
-        GameObject temp = Instantiate(ammoPrefab, shootPoint.position, shootPoint.rotation);
+        if (timeToFire == 0)
+        {
+            GameObject temp = Instantiate(ammoPrefab, shootPoint.position, shootPoint.rotation);
+            timeToFire = fireRate;
+        }
     }
 
     protected override void SetStats()

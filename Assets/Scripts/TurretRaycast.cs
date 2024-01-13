@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class TurretRaycast : WeaponBase
 {
-
+    [Header("Range for the Raycasting")]
     [SerializeField] private float turretRange;
+
+    [Header("Tracer for firing")]
+    [SerializeField] private TrailRenderer bulletTracerRender;
 
     void Start()
     {
@@ -19,7 +22,7 @@ public class TurretRaycast : WeaponBase
     private void FixedUpdate()
     {
         resetFireRate();
-        Debug.Log(timeToFire);
+        //Debug.Log(timeToFire);
     }
 
     public override void Shoot(Vector3 direction)
@@ -32,6 +35,8 @@ public class TurretRaycast : WeaponBase
             {
                 Debug.DrawRay(shootPoint.position, direction.normalized * turretRange, Color.red);
             }
+
+
 
             timeToFire = fireRate;
         }
