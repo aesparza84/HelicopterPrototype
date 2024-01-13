@@ -16,7 +16,6 @@ public class MissileProjectile : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
 
         direction = transform.forward;
-        speed = 5f;
     }
 
     private void FixedUpdate()

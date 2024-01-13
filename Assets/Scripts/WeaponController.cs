@@ -7,11 +7,15 @@ public class WeaponController : MonoBehaviour
     [Header("Weapon Holders")]
     [SerializeField] private GameObject launcherOnePrefab;
     [SerializeField] private GameObject launcherTwoPrefab;
+    [SerializeField] private GameObject turretPrefab;
+
     [SerializeField] private Transform rightMissileRack;
     [SerializeField] private Transform leftMissileRack;
+    [SerializeField] private Transform turretTransform;
 
     private WeaponBase rightLauncher;
     private WeaponBase leftLauncher;
+    private WeaponBase turret;
 
     [Header("Player Inputs")]
     [SerializeField] private InputManager playerInput;
@@ -37,6 +41,16 @@ public class WeaponController : MonoBehaviour
                 GameObject right = Instantiate(launcherTwoPrefab, rightMissileRack);
                 rightLauncher = right.GetComponent<MissileLauncher>();
             }
+        }
+
+        if (turretPrefab == null)
+        {
+            Debug.LogWarning("Turret prefab not set");
+        }
+        else
+        {
+            GameObject newTurret = Instantiate(turretPrefab, turretTransform);
+            turret = newTurret.GetComponent<TurretRaycast>();
         }
         
 
@@ -72,7 +86,7 @@ public class WeaponController : MonoBehaviour
 
     private void OnPrimaryFire(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        
+        handlePrimaryShooting(transform.forward);
     }
 
     // Update is called once per frame
@@ -91,7 +105,11 @@ public class WeaponController : MonoBehaviour
         else
         {
             rightLauncher.Shoot();
-        }
-        
+        }        
+    }
+
+    private void handlePrimaryShooting(Vector3 direction)
+    {
+        turret.Shoot(direction);
     }
 }

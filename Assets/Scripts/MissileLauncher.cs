@@ -10,25 +10,29 @@ public class MissileLauncher : WeaponBase
     {
         if (stats != null)
         {
-            setStats();
+            SetStats();
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        
+        resetFireRate();
     }
     public override void Shoot()
     {
         GameObject temp = Instantiate(ammoPrefab, shootPoint.position, shootPoint.rotation);
     }
 
-    private void setStats()
+    protected override void SetStats()
     {
         fireRate = stats.FireRate;
         damage = stats.Damage;
         hitMask = stats.hitMask;
         ammoPrefab = stats.ammoPrefab;
+    }
+
+    public override void Shoot(Vector3 direction)
+    {
+
     }
 }
